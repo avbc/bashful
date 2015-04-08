@@ -62,6 +62,7 @@ function webperms {
 # Primary purpose of this method is to dump all databases+tables, and then comrpess each 
 # colleciton of table dumps into a single database.tar.gz
 function mysqldumpstar {
+    CURRENT_DATE=`date +%Y%m%d`
     DB_LIST=`mysql -e "SHOW DATABASES;" | tr -d "| " | grep -v Database`
     for DB_NAME in $DB_LIST; do
 
@@ -77,7 +78,7 @@ function mysqldumpstar {
                 mysqldump --skip-comments --compact --force --opt $DB_NAME $T > $DUMP_FILENAME
             done
 
-            TAR_FILENAME="${DB_NAME}.`date +%Y%m%d`.tar.gz"
+            TAR_FILENAME="${DB_NAME}.${CURRENT_DATE}.tar.gz"
             echo "|- Compressing tables that were just dumped ===> ${TAR_FILENAME}"
 
             tar cvpzf $TAR_FILENAME ${DB_NAME}.*.sql
