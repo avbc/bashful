@@ -59,9 +59,8 @@ function webperms {
   find ./ -type d -exec chmod 755 {} \; 
 }
 
-
-# NOTE: This uses minitar alias (above).
-# Primary purpose of this method is to dump all databases+tables, and then comrpess each colleciton of table dumps into a single database tar gz
+# Primary purpose of this method is to dump all databases+tables, and then comrpess each 
+# colleciton of table dumps into a single database.tar.gz
 function mysqldumpstar {
     DB_LIST=`mysql -e "SHOW DATABASES;" | tr -d "| " | grep -v Database`
     for DB_NAME in $DB_LIST; do
@@ -81,7 +80,7 @@ function mysqldumpstar {
             TAR_FILENAME="${DB_NAME}.`date +%Y%m%d`.tar.gz"
             echo "|- Compressing tables that were just dumped ===> ${TAR_FILENAME}"
 
-            minitar $TAR_FILENAME ${DB_NAME}.*.sql
+            tar cvpzf $TAR_FILENAME ${DB_NAME}.*.sql
         fi
     done
 }
